@@ -6,24 +6,32 @@ const nodemon = require('gulp-nodemon');
 const inline = require('gulp-inline');
 const cleanCSS = require('gulp-clean-css');
 const cssAutoPrefixer = require('gulp-autoprefixer');
+const imagemin = require('gulp-imagemin');
 
+const OUTPUT_DIR = 'dist';
 const paths = {
   css: ['src/**/*.css'],
-  html: ['src/index.html']
+  html: ['src/index.html'],
+  assets: ['src/**/*.jpg']
 };
 
-gulp.task('clean', () => {
-  return del(['dist']);
+gulp.task('clean', () => del(OUTPUT_DIR));
+
+gulp.task('assets', () => {
+  return gulp.src(paths.assets)
+    .pipe(imagemin({ progressive: true }))
+    .pipe(gulp.dest(OUTPUT_DIR))
 });
 
 gulp.task('html', () => {
   return gulp.src(paths.html)
     .pipe(inline({
       base: 'src/',
-      css: [cssAutoPrefixer, cleanCSS]
+      css: [cssAutoPrefixer, cleanCSS],
+      disabledTypes: ['img']
     }))
     .pipe(htmlmin())
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest(OUTPUT_DIR));
 });
 
 gulp.task('watch', () => {
@@ -43,6 +51,7 @@ gulp.task('serve', () => {
 
 gulp.task('build', [
   'clean',
+  'assets',
   'html',
   'watch'
 ]);
