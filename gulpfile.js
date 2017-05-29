@@ -8,14 +8,19 @@ const cleanCSS = require('gulp-clean-css');
 const cssAutoPrefixer = require('gulp-autoprefixer');
 const imagemin = require('gulp-imagemin');
 
-const OUTPUT_DIR = 'dist';
+const OUTPUT_DIR = './';
 const paths = {
   css: ['src/**/*.css'],
   html: ['src/index.html'],
   assets: ['src/**/*.jpg']
 };
 
-gulp.task('clean', () => del(OUTPUT_DIR));
+// gulp.task('clean', () => {
+//   return Promise.all([
+//     del(OUTPUT_DIR),
+//     del(OUTPUT_DIR)
+//   ]);
+// });
 
 gulp.task('assets', () => {
   return gulp.src(paths.assets)
@@ -41,20 +46,12 @@ gulp.task('watch', () => {
   gulp.watch(paths.html, ['html']);
 });
 
-gulp.task('serve', () => {
-  nodemon({
-    script: 'server.js',
-    ext: 'js',
-    env: { NODE_ENV: process.env.NODE_ENV, PORT: process.env.PORT }
-  });
-});
-
 gulp.task('build', [
-  'clean',
+  // 'clean',
   'assets',
   'html',
   'watch'
 ]);
 
 
-gulp.task('default', ['build', 'serve']);
+gulp.task('default', ['build']);
