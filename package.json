@@ -30,6 +30,6 @@
     "gulp-uglify": "2.0.0"
   },
   "dependencies": {
-    "express": "4.14.0"
+    "express": "4.19.2"
   }
 }
